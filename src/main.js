@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroImgContainer = document.querySelector('.hero-img-container');
   const heroImgLogo = document.querySelector('.hero-img-logo');
 
-  const faceOverlay = document.querySelector('.face-overlay');
+  const fadeOverlay = document.querySelector('.fade-overlay');
   const svgOverlay = document.querySelector('.overlay');
   const overlayCopy = document.querySelector('h1');
 
@@ -49,5 +49,98 @@ document.addEventListener('DOMContentLoaded', () => {
 
   logoMask.setAttribute('transform', `translate(${logoHorizontalPosition}, ${logoVerticalPosition}) scale(${logoScaleFactor})`);
 
-  // https://youtu.be/lh5fQIlyOe0?si=WshI7krnNKUIN26v&t=651
+  // ScrollTrigger.create({
+  //   trigger: '.hero',
+  //   start: 'top top',
+  //   end: `${window.innerHeight * 5}px`,
+  //   pin: true,
+  //   pinSpacing: true,
+  //   scrub: 1,
+  //   markers: true,
+  //   onUpdate: (self) => {
+  //     const scrollProgress = self.progress;
+  //     const fadeOpacity = 1 - scrollProgress * (1 / 0.15);
+
+  //     if(scrollProgress < 0.15) {
+  //       gsap.set([heroImgLogo], {
+  //         opacity: fadeOpacity,
+  //       });
+  //     } else {
+  //       gsap.set([heroImgLogo], {
+  //         opacity: 0,
+  //       });
+  //     }
+
+  //     if (scrollProgress <= 0.85) {
+  //       const normalizedProgress = scrollProgress * (1 / 0.85);
+  //       const heroImgContainerScale = 1.5 - 0.5 * normalizedProgress;
+  //       const overlayScale = initialOverlayScale * Math.pow(1 / initialOverlayScale, normalizedProgress);
+  //       let fadeOverlayOpacity = 0;
+
+  //       gsap.set(heroImgContainer, {
+  //         scale: heroImgContainerScale,
+  //       });
+
+  //       gsap.set(svgOverlay, {
+  //         scale: overlayScale,
+  //       });
+
+  //       if (scrollProgress >= 0.25) {
+  //         fadeOverlayOpacity = Math.min(1, (scrollProgress - 0.25) * ( 1/ 0.4));
+  //       }
+
+  //       gsap.set(fadeOverlay, {
+  //         opacity: fadeOverlayOpacity,
+  //       });
+  //     }
+  //   }
+  // });
+
+  ScrollTrigger.create({
+    trigger: '.hero',
+    start: 'top top',
+    end: `${window.innerHeight * 5}px`,
+    pin: true,
+    pinSpacing: true,
+    scrub: 1,
+    onUpdate: (self) => {
+      const scrollProgress = self.progress;
+      const fadeOpacity = 1 - scrollProgress * (1 / 0.15);
+
+      if (scrollProgress <= 0.15) { 
+        gsap.set([heroImgLogo], {
+          opacity: fadeOpacity,
+        });
+      } else {
+        gsap.set([heroImgLogo], {
+          opacity: 0,
+        });
+      }
+
+      if (scrollProgress <= 0.85) {
+        const normalizedProgress = scrollProgress * (1 / 0.85);
+        const heroImgContainerScale = 1.5 - 0.5 * normalizedProgress;
+        const overlayScale = initialOverlayScale * Math.pow(1 / initialOverlayScale, normalizedProgress);
+        let fadeOverlayOpacity = 0;
+
+        gsap.set(heroImgContainer, {
+          scale: heroImgContainerScale,
+        });
+
+        gsap.set(svgOverlay, {
+          scale: overlayScale,
+        });
+
+        if(scrollProgress >= 0.25) {
+          fadeOverlayOpacity = Math.min(1, (scrollProgress - 0.25) * (1 / 0.4));
+        }
+
+        gsap.set(fadeOverlay, {
+          opacity: fadeOverlayOpacity,
+        });
+
+      }
+    }
+  })
+
 });
